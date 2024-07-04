@@ -13,7 +13,6 @@ def extract():
     text = data.get("text", "")
 
     doc = nlp(text)
-    print(doc)
     key_fields = {
         "Company you are hiring for": "",
         "Job Title/Role": "",
@@ -29,8 +28,6 @@ def extract():
 
     # Extract entities
     for ent in doc.ents:
-        print("ent")
-        print(ent)
         if ent.label_ == "Company":
             key_fields["Company you are hiring for"] = ent.text
         elif ent.label_ == "JobTitle":
@@ -50,8 +47,8 @@ def extract():
         elif ent.label_ == "Salary":
             key_fields["Salary Details"] = ent.text
 
-    # key_fields["Job Description"] = text
-    print(key_fields)
+    key_fields["Job Description"] = text
+
     return jsonify(key_fields)
 
 

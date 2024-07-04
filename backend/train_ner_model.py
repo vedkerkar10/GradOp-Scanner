@@ -19,11 +19,10 @@ for label in labels:
 
 # Prepare training data
 TRAIN_DATA = [
-    (
-        "We are seeking an experienced Marketing Manager to join our team at Amazon India Pvt. Ltd. This is a full-time internship opportunity with an on-field workplace type, requiring frequent travel to our offices and client locations in Bangalore, India. The ideal candidate will have a Master's degree in Marketing or a related field and at least 3 years of experience in marketing. Experienced professionals are preferred for this role. The job category for this role is Sales and Marketing, and the skills required include expertise in digital marketing, market research, and team management. The salary details for this role are competitive, with a range of ₹80,000 - ₹1,20,000 per month. As a Marketing Manager, you will be responsible for developing and executing marketing strategies to drive business growth. You will work closely with our team of marketers to identify and prioritize project requirements, and develop solutions to meet those requirements. If you are a motivated and experienced marketing professional looking for a new challenge, we encourage you to apply for this exciting opportunity.",
-        {"entities": [(34, 52, "JobTitle"), (78, 99, "Company"), (104, 117, "JobNature"), (156, 163, "WorkplaceType"), (230, 246, "WorkLocation"), (270, 298, "Eligibility"),
-                      (338, 359, "Eligibility"), (447, 464, "JobCategory"), (485, 503, "Skills"), (505, 518, "Skills"), (523, 538, "Skills"), (638, 659, "Salary")]}
-    ),
+    ("We are seeking an experienced Marketing Manager to join our team at Amazon India Pvt. Ltd. This is a full-time internship opportunity with an on-field workplace type, requiring frequent travel to our offices and client locations in Bangalore, India. The ideal candidate will have a Master's degree in Marketing or a related field and at least 3 years of experience in marketing. Experienced professionals are preferred for this role. The job category for this role is Sales and Marketing, and the skills required include expertise in digital marketing, market research, and team management. The salary details for this role are competitive, with a range of ₹80,000 - ₹1,20,000 per month.",
+     {"entities": [(34, 52, "JobTitle"), (78, 99, "Company"), (104, 117, "JobNature"), (156, 163, "WorkplaceType"), (230, 246, "WorkLocation"), (270, 298, "Eligibility"),
+                   (338, 359, "Eligibility"), (447, 464, "JobCategory"), (485, 503, "Skills"), (505, 518, "Skills"), (523, 538, "Skills"), (638, 659, "Salary")]}
+     ),
     # Add more annotated job descriptions here
 ]
 

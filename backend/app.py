@@ -1,56 +1,21 @@
-from flask import Flask, request, jsonify
 import spacy
-from flask_cors import CORS
+import warnings
 
-app = Flask(__name__)
-CORS(app)  # Enable CORS for cross-origin requests
-nlp = spacy.load("job_description_ner_model")  # Load the trained model
+# Suppress specific warnings
+warnings.filterwarnings("ignore", category=UserWarning, module='transformers')
 
+# Load the trained model
+nlp_model = spacy.load('/nlp_model')
 
-@app.route('/extract', methods=['POST'])
-def extract():
-    data = request.json
-    text = data.get("text", "")
+# Example text for testing
+text = "Join us for the annual hackathon titled 'Tech Innovations' by Tech Corp on July 20th. Register now at https://techcorp.com/hackathon. The event will be held in New York City. Eligibility: Open to all. Deadline: July 15th."
 
-    doc = nlp(text)
-    key_fields = {
-        "Company you are hiring for": "",
-        "Job Title/Role": "",
-        "Job Nature": "",
-        "workplace type": "",
-        "worklocation": "",
-        "Job Category": "",
-        "Skills required": [],
-        "Eligibility": "",
-        "Salary Details": "",
-        "Job Description": text
-    }
+# Process the text with the trained model
+doc = nlp_model(text)
 
-    # Extract entities
+# Print the extracted entities
+if not doc.ents:
+    print("No entities were found in the text.")
+else:
     for ent in doc.ents:
-        if ent.label_ == "Company":
-            key_fields["Company you are hiring for"] = ent.text
-        elif ent.label_ == "JobTitle":
-            key_fields["Job Title/Role"] = ent.text
-        elif ent.label_ == "JobNature":
-            key_fields["Job Nature"] = ent.text
-        elif ent.label_ == "WorkplaceType":
-            key_fields["workplace type"] = ent.text
-        elif ent.label_ == "WorkLocation":
-            key_fields["worklocation"] = ent.text
-        elif ent.label_ == "JobCategory":
-            key_fields["Job Category"] = ent.text
-        elif ent.label_ == "Skills":
-            key_fields["Skills required"].append(ent.text)
-        elif ent.label_ == "Eligibility":
-            key_fields["Eligibility"] = ent.text
-        elif ent.label_ == "Salary":
-            key_fields["Salary Details"] = ent.text
-
-    key_fields["Job Description"] = text
-
-    return jsonify(key_fields)
-
-
-if __name__ == '__main__':
-    app.run(debug=True)
+        print(f'{ent.label_.upper():{30}}-{ent.text}')

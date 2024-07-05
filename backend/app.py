@@ -1,21 +1,32 @@
 import spacy
+from flask import Flask, request, jsonify
+from flask_cors import CORS
 import warnings
+import os
 
 # Suppress specific warnings
 warnings.filterwarnings("ignore", category=UserWarning, module='transformers')
 
 # Load the trained model
-nlp_model = spacy.load('/nlp_model')
+model_path = os.path.abspath('nlp_model')
+nlp_model = spacy.load(model_path)
 
-# Example text for testing
-text = "Join us for the annual hackathon titled 'Tech Innovations' by Tech Corp on July 20th. Register now at https://techcorp.com/hackathon. The event will be held in New York City. Eligibility: Open to all. Deadline: July 15th."
+# Initialize Flask app
+app = Flask(__name__)
+CORS(app)  # Enable CORS for all routes
 
-# Process the text with the trained model
-doc = nlp_model(text)
 
-# Print the extracted entities
-if not doc.ents:
-    print("No entities were found in the text.")
-else:
-    for ent in doc.ents:
-        print(f'{ent.label_.upper():{30}}-{ent.text}')
+@app.route('/extract', methods=['POST'])
+def extract_entities():
+    data = request.get_json()
+    text = data.get('text', '')
+    doc = nlp_model(text)
+
+    # Extract entities and format them
+    entities = {ent.label_: ent.text for ent in doc.ents}
+
+    return jsonify(entities)
+
+
+if __name__ == '__main__':
+    app.run(debug=True, host='0.0.0.0', port=5000)

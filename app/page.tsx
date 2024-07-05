@@ -43,7 +43,7 @@ export default function Home() {
   return (
     <div className="min-h-screen bg-black-100 mx-8">
       <h1 className="text-3xl font-bold my-7">Keyword Parser</h1>
-      <div className="w-full bg-black shadow-md rounded-lg flex flex-col md:flex-row ">
+      <div className="w-full bg-black shadow-md rounded-lg flex flex-col md:flex-row">
         <form onSubmit={handleSubmit} className="h-full w-full max-w-xl bg-white p-8 shadow-md rounded mx-2">
           <textarea
             value={text}

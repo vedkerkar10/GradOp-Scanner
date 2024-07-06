@@ -60,7 +60,7 @@ def train_model(train_data):
 
 
 # Path to the JSON data file
-file_path = os.path.abspath('backend/train_data.json')
+file_path = os.path.abspath('backend/job_desc.json')
 with open(file_path, 'r') as file:
     data = json.load(file)
 
@@ -68,5 +68,5 @@ with open(file_path, 'r') as file:
 train_model(data)
 
 # Save the trained model to disk
-nlp.to_disk('nlp_model')
-print("Model training completed and saved to 'nlp_model'")
+nlp.to_disk('jobDesc_model')
+print("Model training completed and saved to 'jobDesc_model'")

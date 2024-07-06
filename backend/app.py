@@ -8,7 +8,7 @@ import os
 warnings.filterwarnings("ignore", category=UserWarning, module='transformers')
 
 # Load the trained model
-model_path = os.path.abspath('nlp_model')
+model_path = os.path.abspath('jobDesc_model')
 nlp_model = spacy.load(model_path)
 
 # Initialize Flask app
@@ -25,6 +25,7 @@ def extract_entities():
     # Extract entities and format them
     entities = {ent.label_: ent.text for ent in doc.ents}
 
+    print(entities)
     return jsonify(entities)
 
 

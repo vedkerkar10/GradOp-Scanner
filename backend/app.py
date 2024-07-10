@@ -8,8 +8,8 @@ import os
 warnings.filterwarnings("ignore", category=UserWarning, module='transformers')
 
 # Load the trained model
-model_path = os.path.abspath('jobDesc_model')
-nlp_model = spacy.load(model_path)
+model_path = os.path.abspath('ner_model')
+nlp = spacy.load(model_path)
 
 # Initialize Flask app
 app = Flask(__name__)
@@ -20,9 +20,11 @@ CORS(app)  # Enable CORS for all routes
 def extract_entities():
     data = request.get_json()
     text = data.get('text', '')
-    doc = nlp_model(text)
+    doc = nlp(text)
 
     # Extract entities and format them
+    # for ent in doc.ents:
+    #     print(f"Text:{ent.text}, Label:{ent.label_}")
     entities = {ent.label_: ent.text for ent in doc.ents}
 
     print(entities)

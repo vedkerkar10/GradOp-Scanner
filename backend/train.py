@@ -1,72 +1,52 @@
-import spacy
-from spacy.training import Example
-import random
 import json
-import warnings
-import os
+import spacy
+from spacy.training.example import Example
+from spacy.util import minibatch, compounding
 
-# Suppress specific warnings
-warnings.filterwarnings("ignore", category=UserWarning, module='transformers')
+# Load the JSON data
+with open('backend/annotations.json', 'r', encoding='utf-8') as f:
+    data = json.load(f)
 
-# Initialize a blank English model
-nlp = spacy.blank('en')
+# Prepare the training data
+TRAIN_DATA = []
+for item in data['annotations']:
+    try:
+        if item is not None and len(item) == 2:
+            text, annotations = item
+            entities = [(start, end, label)
+                        for start, end, label in annotations['entities']]
+            TRAIN_DATA.append((text, {"entities": entities}))
+        else:
+            print(f"Invalid item found: {item}")
+    except ValueError as e:
+        print(f"Error processing item: {item}, Error: {e}")
 
+# Load a pre-existing spaCy model
+nlp = spacy.load("en_core_web_sm")
+ner = nlp.get_pipe("ner")
 
-def remove_overlapping_entities(entities):
-    # Sort entities by start position
-    entities = sorted(entities, key=lambda x: x[0])
-    non_overlapping_entities = []
+# Add new entity labels to the NER pipeline
+for _, annotations in TRAIN_DATA:
+    for ent in annotations.get("entities"):
+        ner.add_label(ent[2])
 
-    for entity in entities:
-        if not non_overlapping_entities or entity[0] >= non_overlapping_entities[-1][1]:
-            non_overlapping_entities.append(entity)
+# Disable other pipelines to only train NER
+pipe_exceptions = ["ner"]
+unaffected_pipes = [
+    pipe for pipe in nlp.pipe_names if pipe not in pipe_exceptions]
 
-    return non_overlapping_entities
-
-
-def train_model(train_data):
-    # Add the 'ner' component to the pipeline if it's not already present
-    if 'ner' not in nlp.pipe_names:
-        ner = nlp.add_pipe('ner', last=True)
-
-    # Add labels to the 'ner' component
-    for _, annotation in train_data:
-        for ent in annotation['entities']:
-            ner.add_label(ent[2])
-
-    # Disable other pipes to only train NER
-    other_pipes = [pipe for pipe in nlp.pipe_names if pipe != 'ner']
-    with nlp.disable_pipes(*other_pipes):
-        optimizer = nlp.begin_training()
-        for itn in range(10):
-            print("Starting iteration " + str(itn))
-            random.shuffle(train_data)
-            losses = {}
-            for text, annotations in train_data:
-                annotations['entities'] = remove_overlapping_entities(
-                    annotations['entities'])
+# Start training
+with nlp.disable_pipes(*unaffected_pipes):
+    optimizer = nlp.begin_training()
+    for itn in range(100):  # Number of iterations
+        losses = {}
+        batches = minibatch(TRAIN_DATA, size=compounding(4.0, 32.0, 1.001))
+        for batch in batches:
+            for text, annotations in batch:
                 doc = nlp.make_doc(text)
                 example = Example.from_dict(doc, annotations)
-                try:
-                    nlp.update(
-                        [example],
-                        drop=0.2,
-                        sgd=optimizer,
-                        losses=losses)
-                except Exception as e:
-                    print(f"Error updating model for text: {text}")
-                    print(f"Exception: {e}")
-            print(f"Iteration {itn} Losses: {losses}")
+                nlp.update([example], drop=0.5, losses=losses)
+        print(f"Losses at iteration {itn}: {losses}")
 
-
-# Path to the JSON data file
-file_path = os.path.abspath('backend/job_desc.json')
-with open(file_path, 'r') as file:
-    data = json.load(file)
-
-# Train the model with the loaded data
-train_model(data)
-
-# Save the trained model to disk
-nlp.to_disk('jobDesc_model')
-print("Model training completed and saved to 'jobDesc_model'")
+# Save the trained model
+nlp.to_disk("ner_model")

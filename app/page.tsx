@@ -31,7 +31,6 @@ export default function Home() {
             <input
               type="text"
               value={result[field]}
-              readOnly
               className="text-black p-2 border border-gray-300 rounded bg-gray-100"
             />
           </div>

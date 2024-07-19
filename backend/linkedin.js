@@ -3,7 +3,7 @@ const axios = require("axios");
 
 module.exports.query = (queryObject) => {
   const query = new Query(queryObject);
-  console.log(query.url(0));
+  // console.log(query.url(0));
   return query.getJobs();
 };
 
@@ -109,17 +109,17 @@ Query.prototype.getJobs = async function () {
       const $ = cheerio.load(data);
       const jobs = $("li");
       resultCount = jobs.length;
-      console.log("I got ", jobs.length, " jobs");
+      // console.log("I got ", jobs.length, " jobs");
       parsedJobs = parseJobList(data);
       allJobs.push(...parsedJobs);
       start += 25;
       if (jobLimit != 0 && allJobs.length > jobLimit) {
         while (allJobs.length != jobLimit) allJobs.pop();
-        console.log("Returning jobs:", JSON.stringify(allJobs));
+        console.log(JSON.stringify({results:allJobs}));
         return allJobs;
       }
     }
-    console.log("Returning jobs:", JSON.stringify(allJobs));
+    // console.log("Returning jobs:", JSON.stringify(allJobs));
     return allJobs;
   } catch (error) {
     console.error("Error in getJobs:", error);
@@ -171,6 +171,6 @@ function parseJobList(jobData) {
 if (require.main === module) {
   const queryOptions = JSON.parse(process.argv[2]);
   module.exports.query(queryOptions).then((response) => {
-    console.log("Final response:", JSON.stringify(response));
+    // console.log("Final response:", JSON.stringify(response));
   });
 }

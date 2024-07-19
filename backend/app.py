@@ -54,7 +54,8 @@ def search_jobs():
             cwd=os.path.dirname(os.path.abspath(__file__))
         )
         print("Subprocess stdout:", result.stdout)
-        print("Subprocess stderr:", result.stderr)
+        
+        # print("Subprocess stderr:", result.stderr)
         if result.stdout:
             try:
                 jobs = json.loads(result.stdout)

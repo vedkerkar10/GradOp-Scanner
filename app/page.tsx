@@ -40,7 +40,7 @@ export default function Home() {
         "http://localhost:5000/api/jobs",
         query
       );
-      setJobs(response.data);
+      setJobs(response.data.results);
     } catch (error) {
       console.error("Error fetching jobs:", error);
     }
@@ -98,27 +98,10 @@ export default function Home() {
         </div>
       </div>
       <div>
-      <h1>Job Search</h1>
-      <JobSearchForm onSearch={handleJobSearch} />
-      {jobs.length > 0 ? (
-        <div>
-          {jobs.map((job, index) => (
-            <div key={index} style={{ border: '1px solid #ccc', padding: '10px', margin: '10px 0' }}>
-              <img src={job.companyLogo} alt={`${job.company} logo`} style={{ width: '50px', height: '50px' }} />
-              <h2>{job.position}</h2>
-              <p><strong>Company:</strong> {job.company}</p>
-              <p><strong>Location:</strong> {job.location}</p>
-              <p><strong>Date Posted:</strong> {job.date}</p>
-              <p><strong>Salary:</strong> {job.salary}</p>
-              <p><strong>Posted:</strong> {job.agoTime}</p>
-              <a href={job.jobUrl} target="_blank" rel="noopener noreferrer">View Job</a>
-            </div>
-          ))}
-        </div>
-      ) : (
-        <p>No jobs found</p>
-      )}
-    </div>
+        <h1>Job Search</h1>
+        <JobSearchForm onSearch={handleJobSearch} />
+        <JobResults jobs={jobs} />
+      </div>
     </div>
   );
 }

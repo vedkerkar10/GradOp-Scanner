@@ -1,6 +1,20 @@
 import React, { useState } from 'react';
 
-const JobSearchForm = ({ onSearch }) => {
+interface JobSearchFormProps {
+  onSearch: (searchParams: {
+    keyword: string;
+    location: string;
+    dateSincePosted: string;
+    jobType: string;
+    remoteFilter: string;
+    salary: string;
+    experienceLevel: string;
+    limit: string;
+    sortBy: string;
+  }) => void;
+}
+
+const JobSearchForm: React.FC<JobSearchFormProps> = ({ onSearch }) => {
   const [keyword, setKeyword] = useState('');
   const [location, setLocation] = useState('');
   const [dateSincePosted, setDateSincePosted] = useState('');
@@ -11,7 +25,7 @@ const JobSearchForm = ({ onSearch }) => {
   const [limit, setLimit] = useState('10');
   const [sortBy, setSortBy] = useState('');
 
-  const handleSubmit = (event) => {
+  const handleSubmit = (event: React.FormEvent) => {
     event.preventDefault();
     onSearch({
       keyword,
@@ -27,7 +41,7 @@ const JobSearchForm = ({ onSearch }) => {
   };
 
   return (
-    <form onSubmit={handleSubmit}>
+    <form onSubmit={handleSubmit} className='text-black'>
       <input
         type="text"
         value={keyword}
@@ -82,7 +96,7 @@ const JobSearchForm = ({ onSearch }) => {
         onChange={(e) => setSortBy(e.target.value)}
         placeholder="Sort By"
       />
-      <button type="submit">Search</button>
+      <button className='text-white' type="submit">Search</button>
     </form>
   );
 };

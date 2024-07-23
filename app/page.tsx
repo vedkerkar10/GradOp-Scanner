@@ -98,7 +98,6 @@ export default function Home() {
         </div>
       </div>
       <div>
-        <h1>Job Search</h1>
         <JobSearchForm onSearch={handleJobSearch} />
         <JobResults jobs={jobs} />
       </div>

@@ -16,21 +16,29 @@ interface JobResultsProps {
 
 const JobResults: React.FC<JobResultsProps> = ({ jobs }) => {
   return (
-    <div>
+    <div className="mt-8">
       {jobs.length > 0 ? (
         jobs.map((job, index) => (
-          <div key={index} className="job-card">
-            <h2>{job.position}</h2>
-            <p>{job.company}</p>
-            <img src={job.companyLogo} alt={`${job.company} logo`} className="company-logo" />
-            <p>{job.location}</p>
-            <p>{job.date}</p>
-            <p>{job.salary}</p>
-            <a href={job.jobUrl} target="_blank" rel="noopener noreferrer">View Job</a>
+          <div key={index} className="text-black bg-white shadow-md rounded-lg p-6 mb-6">
+            <div className="flex items-center mb-4">
+              <img src={job.companyLogo} alt={`${job.company} logo`} className="w-12 h-12 rounded-full mr-4" />
+              <div>
+                <h2 className="text-xl font-semibold">{job.position}</h2>
+                <p className="text-gray-600">{job.company}</p>
+              </div>
+            </div>
+            <div className="mb-4">
+              <p className="text-gray-800"><strong>Location:</strong> {job.location}</p>
+              <p className="text-gray-800"><strong>Date:</strong> {job.date}</p>
+              <p className="text-gray-800"><strong>Salary:</strong> {job.salary}</p>
+            </div>
+            <a href={job.jobUrl} target="_blank" rel="noopener noreferrer" className="text-blue-500 hover:underline">
+              View Job
+            </a>
           </div>
         ))
       ) : (
-        <p>No jobs found</p>
+        <p className="text-gray-600">No jobs found</p>
       )}
     </div>
   );

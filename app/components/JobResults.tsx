@@ -8,6 +8,8 @@ interface Job {
   date: string;
   salary: string;
   jobUrl: string;
+  companyUrl: string;
+  applyUrl: string;
 }
 
 interface JobResultsProps {
@@ -25,6 +27,9 @@ const JobResults: React.FC<JobResultsProps> = ({ jobs }) => {
               <div>
                 <h2 className="text-xl font-semibold">{job.position}</h2>
                 <p className="text-gray-600">{job.company}</p>
+                <a href={job.companyUrl} target="_blank" rel="noopener noreferrer" className="text-blue-500 hover:underline">
+                  View Company
+                </a>
               </div>
             </div>
             <div className="mb-4">
@@ -35,6 +40,11 @@ const JobResults: React.FC<JobResultsProps> = ({ jobs }) => {
             <a href={job.jobUrl} target="_blank" rel="noopener noreferrer" className="text-blue-500 hover:underline">
               View Job
             </a>
+            {job.applyUrl && (
+              <a href={job.applyUrl} target="_blank" rel="noopener noreferrer" className="text-red-500 hover:underline">
+                Easy Apply
+              </a>
+            )}
           </div>
         ))
       ) : (

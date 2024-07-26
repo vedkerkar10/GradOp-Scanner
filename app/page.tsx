@@ -4,6 +4,7 @@ import { useState } from "react";
 import JobSearchForm from "./components/JobSearchForm";
 import JobResults from "./components/JobResults";
 import axios from "axios";
+import Link from "next/link";
 
 export default function Home() {
   const [text, setText] = useState("");
@@ -26,9 +27,10 @@ export default function Home() {
         throw new Error(`HTTP error! status: ${response.status}`);
       }
 
-      const data = await response.json();
+      // Changed to directly receive text response
+      const data = await response.text(); // Changed from response.json() to response.text()
       console.log("Received data:", data);
-      setResult(data);
+      setResult({ extractedText: data }); // Set result as an object with extractedText
     } catch (error) {
       console.error("Failed to fetch data:", error);
     }
@@ -49,17 +51,18 @@ export default function Home() {
   const renderExtractedKeywordsForm = () => {
     return (
       <form className="space-y-4">
-        {Object.keys(result).map((field) => (
-          <div key={field} className="flex flex-col">
-            <label className="text-black font-semibold mb-2">{field}</label>
-            <input
-              type="text"
-              value={result[field]}
-              readOnly
-              className="text-black p-2 border border-gray-300 rounded bg-gray-100"
-            />
-          </div>
-        ))}
+        {/* Changed to display extracted text directly */}
+        <div className="flex flex-col">
+          <label className="text-black font-semibold mb-2">
+            Extracted Text
+          </label>
+          <textarea
+            value={result.extractedText || ""}
+            readOnly
+            className="text-black p-2 border border-gray-300 rounded bg-gray-100"
+            rows={10}
+          />
+        </div>
       </form>
     );
   };
@@ -85,6 +88,12 @@ export default function Home() {
           >
             Extract
           </button>
+          <button
+            type="submit"
+            className="w-full bg-blue-500 mt-2 text-white py-2 px-4 rounded hover:bg-blue-800 transition duration-200"
+          >
+            Upload
+          </button>
         </form>
         <div className="h-full w-full max-w-xl bg-white shadow-md rounded mx-2 my-2 md:my-0">
           {Object.keys(result).length > 0 && (
@@ -96,6 +105,15 @@ export default function Home() {
             </div>
           )}
         </div>
+      </div>
+      <div className="mt-8">
+        Want to Analyze your CV and see where you stand?
+        <Link
+          className="bg-blue-500 text-white m-3 px-3 py-1 rounded-md"
+          href={"/CV"}
+        >
+          Click
+        </Link>
       </div>
       <div>
         <JobSearchForm onSearch={handleJobSearch} />

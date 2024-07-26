@@ -147,10 +147,15 @@ function parseJobList(jobData) {
           .replace(/\n/g, "")
           .replaceAll(" ", "") || "";
       const jobUrl = job.find(".base-card__full-link").attr("href") || "";
+      const companyUrl = job.find(".base-search-card__subtitle a").attr("href") || ""; 
       const companyLogo =
         job.find(".artdeco-entity-image").attr("data-delayed-url") || "";
       const agoTime =
         job.find(".job-search-card__listdate").text().trim() || "";
+      const applyUrl = job.find('.jobs-apply-button').attr('data-job-id') ? 
+        `https://www.linkedin.com/jobs/apply/${job.find('.jobs-apply-button').attr('data-job-id')}` : ""; // Extract apply URL
+  
+
       return {
         position: position,
         company: company,
@@ -160,6 +165,8 @@ function parseJobList(jobData) {
         agoTime: agoTime,
         salary: salary,
         jobUrl: jobUrl,
+        companyUrl: companyUrl,
+        applyUrl: applyUrl,
       };
     })
     .get();

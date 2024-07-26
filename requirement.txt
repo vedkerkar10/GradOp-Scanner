@@ -1,9 +1,9 @@
-Flask
+flask
 flask-cors
 selenium
 webdriver-manager
 beautifulsoup4
 ollama
 requests
-ollama
 python-dotenv
+cheerio

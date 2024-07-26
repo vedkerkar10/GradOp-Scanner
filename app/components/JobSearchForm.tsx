@@ -43,9 +43,9 @@ const JobSearchForm: React.FC<JobSearchFormProps> = ({ onSearch }) => {
   return (
     <form
       onSubmit={handleSubmit}
-      className="w-full flex flex-col justify-center items-start p-4 text-black"
+      className="w-full flex flex-col justify-center items-start p-4 mt-10 text-black"
     >
-      <h1 className="text-2xl font-bold mb-4">Job Search</h1>
+      <h1 className="text-white text-2xl font-bold mb-4">Job Search</h1>
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 w-full">
         <div className="flex flex-col">
           <label className="text-white mb-2">Job Role:</label>

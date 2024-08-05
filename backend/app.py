@@ -1,3 +1,4 @@
+from groq import Groq
 import pytesseract as tess
 import PyPDF2
 from PIL import Image
@@ -11,35 +12,28 @@ from dotenv import load_dotenv
 import subprocess
 
 load_dotenv()
+client = Groq()
+
+# app = Flask(__name__)
+# CORS(app)
 
 app = Flask(__name__)
-CORS(app)
+CORS(app, resources={r"/*": {"origins": "*"}})
 
 @app.route('/extract', methods=['POST'])
 def extract():
     data = request.json
     inp = data['text']
-    stream = ollama.chat(model='qwen2:0.5b', messages=[
+    stream = ollama.chat(model='gemma:2b', messages=[
         {
             'role': 'user',
             'content': f"""
-                Extract all relevant attributes from the following text related to job descriptions or internships or webinars or any events.
-                Give it in a structured format
-                Example format:
-                - Company: 
-                - Salary: 
-                - Location: 
-                - Experience:
-                - Job Title: 
-                - Skills Required:
-                - Workplace Type:
-                - Deadline Date:
-                etc.
-                Give all fields from the text provided.
-                Identify and extract fields only which are present in the text.
-                For any text provided you must be able to extract key fields from there.
-                Text: {inp}
-                """,
+                Extract each and every attributes from the following text related to job descriptions or internships or webinars or any events and state it in a key value pair format.
+                example of output: 
+                Company - Companyname
+                
+                .
+                here is the text:{inp}""",
         },
     ])
 
@@ -54,31 +48,36 @@ def extract():
         return "An unexpected error occurred", 500
 
 
+
+
 @app.route('/api/jobs', methods=['POST'])
 def search_jobs():
     query = request.json
     try:
-        result = subprocess.run(
-            ['node', 'linkedin.js', json.dumps(query)],
-            capture_output=True,
-            text=True,
-            cwd=os.path.dirname(os.path.abspath(__file__))
-        )
-        print("Subprocess stdout:", result.stdout)
-        
-        # print("Subprocess stderr:", result.stderr)
-        if result.stdout:
-            try:
-                jobs = json.loads(result.stdout)
-                return jsonify(jobs)
-            except json.JSONDecodeError as e:
-                print(f"JSON decode error: {e}")
-                return jsonify({"error": "Invalid JSON output from subprocess"}), 500
-        else:
-            return jsonify({"error": "No output from subprocess"}), 500
+        while True:  # Loop until we get a valid output
+            result = subprocess.run(
+                ['node', 'linkedin.js', json.dumps(query)],
+                capture_output=True,
+                text=True,
+                cwd=os.path.dirname(os.path.abspath(__file__))
+            )
+            print("Subprocess stdout:", result.stdout)
+            
+            if result.stdout:
+                try:
+                    jobs = json.loads(result.stdout)
+                    return jsonify(jobs)
+                    
+                except json.JSONDecodeError as e:
+                    print(f"JSON decode error: {e}")
+                    return jsonify({"error": "Invalid JSON output from subprocess"}), 500
+            else:
+                print("No output from subprocess, retrying...")
     except Exception as e:
         print(f"Error fetching jobs: {e}")
         return jsonify({"error": "Failed to fetch jobs"}), 500
+
+
 
 tess.pytesseract.tesseract_cmd = r'C:/Program Files/Tesseract-OCR/tesseract.exe'
 
@@ -118,35 +117,54 @@ def upload_file():
     else:
         return jsonify({"error": "Invalid file type"}), 400
 
+
 @app.route('/ask', methods=['POST'])
 def ask_question():
     data = request.json
     extracted_text = data['extracted_text']
     question = data['question']
 
-    stream = ollama.chat(model='tinyllama', messages=[
-        {
-            'role': 'user',
-             'content': f"""
-                The following text is extracted from my CV. 
-                Answer the question based on the information as a knowledgeable mentor.
-                Dont explain the points from the CV.
-                Give realtime information. Be on the point.
+    completion = client.chat.completions.create(
+        model="llama-3.1-70b-versatile",
+        messages=[
+            {
+                "role": "user",
+                "content": f"This is extracted text from my CV: {extracted_text}. Act as a knowledgeble mentor and answer my question. Question: {question}. Give one line answer in point form"
+            }
+        ],
+        temperature=1,
+        max_tokens=1024,
+        top_p=1,
+        stream=True,
+        stop=None,
+    )
 
-                Question: {question}
-                
-                Text: {extracted_text}
-                """,
-        },
-    ])
+    response_content = ""
+    for chunk in completion:
+        response_content += chunk.choices[0].delta.content or ""
 
+    print("Response content:", response_content)
+    return jsonify({"answer": response_content}), 200
+
+@app.route('/api/courses', methods=['GET'])
+def get_courses():
+    title_filter = request.args.get('title', '')
     try:
-        content = stream['message']['content'].strip()
-        print("Response content:", content)
-        return jsonify({"answer": content}), 200
+        result = subprocess.run(
+            ['node', 'course.js', title_filter],
+            capture_output=True,
+            text=True,
+            cwd=os.path.dirname(os.path.abspath(__file__))
+        )
+        print("Subprocess stdout:", result.stdout)  # Debugging line
+        print("Subprocess stderr:", result.stderr)  # Debugging line
+        if result.stdout:
+            return result.stdout, 200, {'Content-Type': 'application/json'}
+        else:
+            return jsonify({"error": "No output from subprocess"}), 500
     except Exception as e:
-        print("Error during Ollama chat:", e)
-        return jsonify({"error": "An error occurred while processing the question"}), 500
+        print(f"Error fetching courses: {e}")
+        return jsonify({"error": "Failed to fetch courses"}), 500
 
 if __name__ == '__main__':
     app.run(debug=True, port=5000)

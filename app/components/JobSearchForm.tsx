@@ -45,10 +45,10 @@ const JobSearchForm: React.FC<JobSearchFormProps> = ({ onSearch }) => {
       onSubmit={handleSubmit}
       className="w-full flex flex-col justify-center items-start p-4 mt-10 text-black"
     >
-      <h1 className="text-white text-2xl font-bold mb-4">Job Search</h1>
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 w-full">
-        <div className="flex flex-col">
-          <label className="text-white mb-2">Job Role:</label>
+      <h1 className="text-black text-2xl font-bold mb-4">Job Search</h1>
+      <div className=" grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 w-full">
+        <div className="text-black flex flex-col">
+          <label className=" mb-2">Job Role:</label>
           <input
             type="text"
             value={keyword}
@@ -58,7 +58,7 @@ const JobSearchForm: React.FC<JobSearchFormProps> = ({ onSearch }) => {
           />
         </div>
         <div className="flex flex-col">
-          <label className="text-white mb-2">Location:</label>
+          <label className=" mb-2">Location:</label>
           <input
             type="text"
             value={location}
@@ -68,7 +68,7 @@ const JobSearchForm: React.FC<JobSearchFormProps> = ({ onSearch }) => {
           />
         </div>
         <div className="flex flex-col">
-          <label className="text-white mb-2">Date Since Posted:</label>
+          <label className="mb-2">Date Since Posted:</label>
           <input
             type="text"
             value={dateSincePosted}
@@ -78,7 +78,7 @@ const JobSearchForm: React.FC<JobSearchFormProps> = ({ onSearch }) => {
           />
         </div>
         <div className="flex flex-col">
-          <label className="text-white mb-2">Job Type:</label>
+          <label className="mb-2">Job Type:</label>
           <input
             type="text"
             value={jobType}
@@ -88,7 +88,7 @@ const JobSearchForm: React.FC<JobSearchFormProps> = ({ onSearch }) => {
           />
         </div>
         <div className="flex flex-col">
-          <label className="text-white mb-2">Remote Filter:</label>
+          <label className="mb-2">Remote Filter:</label>
           <input
             type="text"
             value={remoteFilter}
@@ -98,7 +98,7 @@ const JobSearchForm: React.FC<JobSearchFormProps> = ({ onSearch }) => {
           />
         </div>
         <div className="flex flex-col">
-          <label className="text-white mb-2">Salary:</label>
+          <label className="mb-2">Salary:</label>
           <input
             type="text"
             value={salary}
@@ -108,7 +108,7 @@ const JobSearchForm: React.FC<JobSearchFormProps> = ({ onSearch }) => {
           />
         </div>
         <div className="flex flex-col">
-          <label className="text-white mb-2">Experience Level:</label>
+          <label className="mb-2">Experience Level:</label>
           <input
             type="text"
             value={experienceLevel}
@@ -118,7 +118,7 @@ const JobSearchForm: React.FC<JobSearchFormProps> = ({ onSearch }) => {
           />
         </div>
         <div className="flex flex-col">
-          <label className="text-white mb-2">Limit:</label>
+          <label className="mb-2">Limit:</label>
           <input
             type="text"
             value={limit}
@@ -128,7 +128,7 @@ const JobSearchForm: React.FC<JobSearchFormProps> = ({ onSearch }) => {
           />
         </div>
         <div className="flex flex-col">
-          <label className="text-white mb-2">Sort By:</label>
+          <label className=" mb-2">Sort By:</label>
           <input
             type="text"
             value={sortBy}

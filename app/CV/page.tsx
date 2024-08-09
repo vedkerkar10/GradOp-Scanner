@@ -52,7 +52,7 @@ const CV = () => {
     }
   };
 
-  const renderAnswer = (answer) => {
+  const renderAnswer = (answer: string) => {
     return answer.split("\n").map((line, index) => {
       const parts = line.split(/(\*\*.*?\*\*)/g);
       return (

@@ -3,24 +3,34 @@
 import { useState } from "react";
 import Navbar from "../components/Navbar";
 
-interface Course {
-    course_image_URL: string;
-    course_title: string;
-    course_organization: string;
+interface Project {
+    project_image_URL: string;
+    project_title: string;
+    project_organization: string;
     skills: string;
-    course_Certificate_type: string;
-    course_URL: string;
+    project_Certificate_type: string;
+    project_URL: string;
 }
 
-const Courses = () => {
+const Projects = () => {
     const [searchTerm, setSearchTerm] = useState("");
-    const [courses, setCourses] = useState<Course[]>([]);
+    const [projects, setProjects] = useState<Project[]>([]);
+    const [error, setError] = useState<string | null>(null);
 
     const handleSearch = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
-        const response = await fetch(`http://localhost:5000/api/courses?title=${searchTerm}`);
-        const data = await response.json();
-        setCourses(data.courses);  // Access the courses array from the response object
+        setError(null); // Reset error state
+        try {
+            const response = await fetch(`http://localhost:5000/api/projects?title=${searchTerm}`);
+            if (!response.ok) {
+                throw new Error(`HTTP error! status: ${response.status}`);
+            }
+            const data = await response.json();
+            setProjects(data.projects);  // Access the projects array from the response object
+        } catch (err) {
+            setError(err.message);
+            console.error("Fetch error:", err);
+        }
     };
 
     return (
@@ -29,15 +39,15 @@ const Courses = () => {
             <div className="flex flex-col md:flex-row p-8 bg-white">
                 <div className="flex flex-col w-full md:w-[65%] px-8 text-black bg-white">
                     <h1 className="w-full text-black text-2xl md:text-2xl font-bold mb-4">
-                        Boost your chances of getting your desired job with these courses
+                        Boost your skills with these projects
                     </h1>
                     <h1 className="text-black mt-4 font-light text-lg">
-                        Search for courses
+                        Search for projects
                     </h1>
                     <form className="w-96" onSubmit={handleSearch}>
                         <input
                             className="text-black w-full p-2 border border-gray-300 rounded"
-                            placeholder="Search for courses"
+                            placeholder="Search for projects"
                             value={searchTerm}
                             onChange={(e) => setSearchTerm(e.target.value)}
                         />
@@ -48,24 +58,25 @@ const Courses = () => {
                             Search
                         </button>
                     </form>
+                    {error && <p className="text-red-500 mt-4">{error}</p>}
                     <div className="mt-8">
-                        {courses.length > 0 ? (
-                            courses.map((course, index) => (
+                        {projects.length > 0 ? (
+                            projects.map((project, index) => (
                                 <div key={index} className="flex border p-4 mb-4 rounded shadow-lg">
-                                    <img src={course.course_image_URL} alt={course.course_title} className="w-24 h-24 object-cover rounded mr-4" />
+                                    <img src={project.project_image_URL} alt={project.project_title} className="w-24 h-24 object-cover rounded mr-4" />
                                     <div>
-                                        <h2 className="text-xl font-bold mb-2">{course.course_title}</h2>
-                                        <p className="text-gray-700 mb-2"><strong>Organization:</strong> {course.course_organization}</p>
-                                        <p className="text-gray-700 mb-2"><strong>Skills:</strong> {course.skills}</p>
-                                        <p className="text-gray-700 mb-2"><strong>Certificate Type:</strong> {course.course_Certificate_type}</p>
-                                        <a href={course.course_URL} target="_blank" rel="noopener noreferrer" className="text-blue-500 hover:underline">
-                                            View Course
+                                        <h2 className="text-xl font-bold mb-2">{project.project_title}</h2>
+                                        <p className="text-gray-700 mb-2"><strong>Organization:</strong> {project.project_organization}</p>
+                                        <p className="text-gray-700 mb-2"><strong>Skills:</strong> {project.skills}</p>
+                                        <p className="text-gray-700 mb-2"><strong>Certificate Type:</strong> {project.project_Certificate_type}</p>
+                                        <a href={project.project_URL} target="_blank" rel="noopener noreferrer" className="text-blue-500 hover:underline">
+                                            View Project
                                         </a>
                                     </div>
                                 </div>
                             ))
                         ) : (
-                            <p>No courses found.</p>
+                            <p>No projects found.</p>
                         )}
                     </div>
                 </div>
@@ -97,4 +108,4 @@ const Courses = () => {
     );
 };
 
-export default Courses;
+export default Projects;

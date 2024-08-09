@@ -44,7 +44,7 @@ async function fetchAllCourses(totalPages) {
 }
 
 async function generateFilteredCourses(titleFilter) {
-  const totalPages = 50;
+  const totalPages = 20;
   const courses = await fetchAllCourses(totalPages);
 
   const filteredCourses = courses.filter(course =>

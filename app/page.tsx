@@ -30,7 +30,7 @@ export default function Home() {
     }
   };
 
-  const handleJobSearch = async (query) => {
+  const handleJobSearch = async (query: any) => {
     try {
       const response = await axios.post(
         "http://localhost:5000/api/jobs",

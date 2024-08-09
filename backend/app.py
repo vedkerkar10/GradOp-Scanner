@@ -14,8 +14,8 @@ import subprocess
 load_dotenv()
 client = Groq()
 
-# app = Flask(__name__)
-# CORS(app)
+app = Flask(__name__)
+CORS(app, resources={r"/*": {"origins": "*"}})
 
 app = Flask(__name__)
 CORS(app, resources={r"/*": {"origins": "*"}})
@@ -156,8 +156,8 @@ def get_courses():
             text=True,
             cwd=os.path.dirname(os.path.abspath(__file__))
         )
-        print("Subprocess stdout:", result.stdout)  # Debugging line
-        print("Subprocess stderr:", result.stderr)  # Debugging line
+        print("Subprocess stdout:", result.stdout)
+        print("Subprocess stderr:", result.stderr)
         if result.stdout:
             return result.stdout, 200, {'Content-Type': 'application/json'}
         else:
@@ -165,6 +165,27 @@ def get_courses():
     except Exception as e:
         print(f"Error fetching courses: {e}")
         return jsonify({"error": "Failed to fetch courses"}), 500
+
+@app.route('/api/projects', methods=['GET'])
+def get_projects():
+    title_filter = request.args.get('title', '')
+    try:
+        result = subprocess.run(
+            ['node', 'projects.js', title_filter],
+            capture_output=True,
+            text=True,
+            cwd=os.path.dirname(os.path.abspath(__file__))
+        )
+        print("Subprocess stdout:", result.stdout)
+        print("Subprocess stderr:", result.stderr)
+        if result.stdout:
+            return result.stdout, 200, {'Content-Type': 'application/json'}
+        else:
+            return jsonify({"error": "No output from subprocess"}), 500
+    except Exception as e:
+        print(f"Error fetching projects: {e}")
+        return jsonify({"error": "Failed to fetch projects"}), 500
+    
 
 if __name__ == '__main__':
     app.run(debug=True, port=5000)

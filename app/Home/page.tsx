@@ -35,7 +35,7 @@ const Main: React.FC<MainProps> = ({ onSearch }) => {
   const [limit, setLimit] = useState("20");
   
 
-  const handleJobSearch = async (query) => {
+  const handleJobSearch = async (query: { keyword: string; location: string; dateSincePosted: string; jobType: string; remoteFilter: string; salary: string; experienceLevel: string; limit: string; sortBy: string; }) => {
     try {
       const response = await axios.post(
         "http://localhost:5000/api/jobs",

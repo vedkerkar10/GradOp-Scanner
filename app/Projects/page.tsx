@@ -30,7 +30,7 @@ const Projects = () => {
                 const data = await response.json();
                 setProjects(data.projects);
                 setFilteredProjects(data.projects); // Initially, all projects are displayed
-            } catch (err) {
+            } catch (err:any) {
                 setError(err.message);
                 console.error("Fetch error:", err);
             } finally {

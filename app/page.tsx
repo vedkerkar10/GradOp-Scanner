@@ -4,6 +4,7 @@ import { useState } from "react";
 import axios from "axios";
 import Navbar from "./components/Navbar";
 import HeroSection from "./components/HeroSection";
+import Main from "./components/Main";
 
 export default function Home() {
   const [result, setResult] = useState({});
@@ -48,7 +49,7 @@ export default function Home() {
   return (
     <div className="min-h-screen bg-[#F0F0F0]">
       <Navbar />
-      <HeroSection onSearch={handleJobSearch} />
+      <Main onSearch={handleJobSearch} />
     </div>
   );
 }

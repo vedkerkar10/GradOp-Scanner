@@ -7,7 +7,6 @@ import requests
 from flask import Flask, request, jsonify
 from flask_cors import CORS
 import json
-import ollama
 from dotenv import load_dotenv
 import subprocess
 
@@ -17,38 +16,52 @@ client = Groq()
 app = Flask(__name__)
 CORS(app, resources={r"/*": {"origins": "*"}})
 
-app = Flask(__name__)
-CORS(app, resources={r"/*": {"origins": "*"}})
+tess.pytesseract.tesseract_cmd = r'C:/Program Files/Tesseract-OCR/tesseract.exe'
 
 @app.route('/extract', methods=['POST'])
 def extract():
     data = request.json
     inp = data['text']
-    stream = ollama.chat(model='gemma:2b', messages=[
-        {
-            'role': 'user',
-            'content': f"""
-                Extract each and every attributes from the following text related to job descriptions or internships or webinars or any events and state it in a key value pair format.
-                example of output: 
-                Company - Companyname
-                
-                .
-                here is the text:{inp}""",
-        },
-    ])
 
+    completion = client.chat.completions.create(
+        model="llama-3.1-70b-versatile",
+        messages=[
+            {
+                "role": "user",
+                "content": f"""
+                    Extract each and every attribute from the following text related to job descriptions or internships or webinars or any events and state it in a key-value pair format.
+                    Example of output: 
+                    Company - Companyname
+                    
+                    .
+                    Here is the text: {inp}"""
+            }
+        ],
+        temperature=1,
+        max_tokens=1024,
+        top_p=1,
+        stream=True,
+        stop=None,
+    )
+
+    response_content = ""
+    for chunk in completion:
+        response_content += chunk.choices[0].delta.content or ""
+
+    print("Response content:", response_content)
+    
     try:
-        content = stream['message']['content'].strip()  
-        print("Response content:", content)
+        # Parse the content into a dictionary
+        extracted_keywords = {}
+        for line in response_content.split('\n'):
+            if ' - ' in line:
+                key, value = line.split(' - ', 1)
+                extracted_keywords[key.strip()] = value.strip()
         
-        # Removed JSON parsing and directly return the content
-        return content, 200  # Return plain text instead of JSON
+        return jsonify(extracted_keywords), 200
     except Exception as e:
         print("Unexpected error:", e)
-        return "An unexpected error occurred", 500
-
-
-
+        return jsonify({"error": "An unexpected error occurred"}), 500
 
 @app.route('/api/jobs', methods=['POST'])
 def search_jobs():
@@ -59,6 +72,7 @@ def search_jobs():
                 ['node', 'linkedin.js', json.dumps(query)],
                 capture_output=True,
                 text=True,
+                encoding='utf-8',  # Specify the encoding here
                 cwd=os.path.dirname(os.path.abspath(__file__))
             )
             print("Subprocess stdout:", result.stdout)
@@ -67,7 +81,6 @@ def search_jobs():
                 try:
                     jobs = json.loads(result.stdout)
                     return jsonify(jobs)
-                    
                 except json.JSONDecodeError as e:
                     print(f"JSON decode error: {e}")
                     return jsonify({"error": "Invalid JSON output from subprocess"}), 500
@@ -76,10 +89,6 @@ def search_jobs():
     except Exception as e:
         print(f"Error fetching jobs: {e}")
         return jsonify({"error": "Failed to fetch jobs"}), 500
-
-
-
-tess.pytesseract.tesseract_cmd = r'C:/Program Files/Tesseract-OCR/tesseract.exe'
 
 def extract_text_from_pdf(pdf_file: str) -> str:
     with open(pdf_file, 'rb') as pdf:
@@ -117,7 +126,6 @@ def upload_file():
     else:
         return jsonify({"error": "Invalid file type"}), 400
 
-
 @app.route('/ask', methods=['POST'])
 def ask_question():
     data = request.json
@@ -129,7 +137,7 @@ def ask_question():
         messages=[
             {
                 "role": "user",
-                "content": f"This is extracted text from my CV: {extracted_text}. Act as a knowledgeble mentor and answer my question. Question: {question}. Give one line answer in point form"
+                "content": f"This is extracted text from my CV: {extracted_text}. Act as a knowledgeable mentor and answer my question. Question: {question}. Give one line answer in point form"
             }
         ],
         temperature=1,
@@ -154,6 +162,7 @@ def get_courses():
             ['node', 'course.js', title_filter],
             capture_output=True,
             text=True,
+            encoding='utf-8',  # Specify the encoding here
             cwd=os.path.dirname(os.path.abspath(__file__))
         )
         print("Subprocess stdout:", result.stdout)
@@ -174,6 +183,28 @@ def get_projects():
             ['node', 'projects.js', title_filter],
             capture_output=True,
             text=True,
+            encoding='utf-8',  # Specify the encoding here
+            cwd=os.path.dirname(os.path.abspath(__file__))
+        )
+        print("Subprocess stdout:", result.stdout)
+        print("Subprocess stderr:", result.stderr)
+        if result.stdout:
+            all_projects = json.loads(result.stdout)['projects']
+            return jsonify({"projects": all_projects}), 200
+        else:
+            return jsonify({"error": "No output from subprocess"}), 500
+    except Exception as e:
+        print(f"Error fetching projects: {e}")
+        return jsonify({"error": "Failed to fetch projects"}), 500
+
+@app.route('/api/internships', methods=['GET'])
+def get_internships():
+    try:
+        result = subprocess.run(
+            ['node', 'internships.js'],
+            capture_output=True,
+            text=True,
+            encoding='utf-8',  # Specify the encoding here
             cwd=os.path.dirname(os.path.abspath(__file__))
         )
         print("Subprocess stdout:", result.stdout)
@@ -183,9 +214,28 @@ def get_projects():
         else:
             return jsonify({"error": "No output from subprocess"}), 500
     except Exception as e:
-        print(f"Error fetching projects: {e}")
-        return jsonify({"error": "Failed to fetch projects"}), 500
-    
+        print(f"Error fetching internships: {e}")
+        return jsonify({"error": "Failed to fetch internships"}), 500
+
+@app.route('/api/hackathons', methods=['GET'])
+def get_hackathons():
+    try:
+        result = subprocess.run(
+            ['node', 'UnstopHack.js'],
+            capture_output=True,
+            text=True,
+            encoding='utf-8',  # Specify the encoding here
+            cwd=os.path.dirname(os.path.abspath(__file__))
+        )
+        print("Subprocess stdout:", result.stdout)
+        print("Subprocess stderr:", result.stderr)
+        if result.stdout:
+            return result.stdout, 200, {'Content-Type': 'application/json'}
+        else:
+            return jsonify({"error": "No output from subprocess"}), 500
+    except Exception as e:
+        print(f"Error fetching hackathons: {e}")
+        return jsonify({"error": "Failed to fetch hackathons"}), 500
 
 if __name__ == '__main__':
     app.run(debug=True, port=5000)

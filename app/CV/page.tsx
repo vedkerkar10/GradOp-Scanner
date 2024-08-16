@@ -3,10 +3,12 @@
 import { useState } from "react";
 import Navbar from "../components/Navbar";
 import axios from "axios";
+import TextInput from "../components/TextInput";
 
 const CV = () => {
   const [file, setFile] = useState<File | null>(null);
   const [extractedText, setExtractedText] = useState<string>("");
+  const [extractedKeywords, setExtractedKeywords] = useState<{ [key: string]: string }>({});
   const [question, setQuestion] = useState<string>("");
   const [answer, setAnswer] = useState<string>("");
 
@@ -35,6 +37,15 @@ const CV = () => {
       setExtractedText(response.data.extracted_text);
     } catch (error) {
       console.error("Error uploading file:", error);
+    }
+  };
+
+  const handleTextSubmit = async (text: string) => {
+    try {
+      const response = await axios.post("http://localhost:5000/extract", { text });
+      setExtractedKeywords(response.data);
+    } catch (error) {
+      console.error("Error extracting keywords:", error);
     }
   };
 
@@ -148,6 +159,7 @@ const CV = () => {
           </h1>
         </div>
       </div>
+      <TextInput onSubmit={handleTextSubmit} extractedText={extractedText} extractedKeywords={extractedKeywords} />
     </>
   );
 };

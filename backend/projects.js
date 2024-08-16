@@ -46,7 +46,7 @@ async function fetchAllProjects(totalPages) {
 
 // Main function to fetch and filter projects
 async function generateFilteredProjects(titleFilter) {
-  const totalPages = 50;
+  const totalPages = 50; // Adjust this number based on the total number of pages available
   const projects = await fetchAllProjects(totalPages);
 
   const filteredProjects = projects.filter(project =>

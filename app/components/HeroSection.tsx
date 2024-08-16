@@ -15,7 +15,7 @@ interface HeroSectionProps {
   }) => void;
 }
 
-const HeroSection: React.FC<HeroSectionProps> = ({ onSearch }) => {
+const HeroSection: React.FC.<HeroSectionProps> = ({ onSearch }) => {
   const [keyword, setKeyword] = useState("");
   const [location, setLocation] = useState("");
   const [dateSincePosted, setDateSincePosted] = useState("");

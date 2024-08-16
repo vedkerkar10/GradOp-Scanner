@@ -7,3 +7,6 @@ ollama
 requests
 python-dotenv
 cheerio
+pytesseract
+PyPDF2
+groq

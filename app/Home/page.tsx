@@ -64,6 +64,7 @@ const Main: React.FC<MainProps> = ({ onSearch }) => {
       sortBy,
     };
     handleJobSearch(searchParams); // Call handleJobSearch with the same parameters
+    onSearch(searchParams); // Call onSearch with the search parameters
   };
   return (
     <>

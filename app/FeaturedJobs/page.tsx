@@ -122,7 +122,7 @@ const JobResults: React.FC = () => {
             </div>
           ) : (
             <>
-              <span className="text-black mt-8 md:mt-8 mb-8 md:mb-0 text-2xl md:text-3xl font-bold">Featured Jobs</span>
+              <span className="text-black mt-4 md:mt-8 mb-8 text-2xl md:text-3xl font-bold">Featured Jobs</span>
               <div className="w-full flex justify-start items-center text-black">
                 {jobs.length > 0 ? (
                   <div className="relative w-full max-w-4xl md:max-w-5xl">
@@ -260,7 +260,7 @@ const JobResults: React.FC = () => {
           <span className="text-6xl">Need help with your CV ?</span>
           <span className="text-xl mt-8">We have an AI chat bot for you</span>
           <Link href={'/CV'}>
-            <button className="mt-2 bg-green-500 text-white w-24 p-2 rounded-lg hover:bg-black hover:border-4 hover:text-white">Try now</button>
+            <button className="mt-2 bg-green-500 text-white w-24 p-2 rounded-lg hover:bg-black hover:border-4 hover:text-white mb-4">Try now</button>
           </Link>
         </div>
       </div>

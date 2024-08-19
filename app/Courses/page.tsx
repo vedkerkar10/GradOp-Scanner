@@ -30,7 +30,7 @@ const Courses = () => {
                 const data = await response.json();
                 setCourses(data.courses);
                 setFilteredCourses(data.courses);
-            } catch (err: any) {
+            } catch (err) {
                 setError(err.message);
                 console.error("Fetch error:", err);
             } finally {

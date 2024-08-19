@@ -113,15 +113,15 @@ const JobResults: React.FC<JobResultsProps> = ({ jobs }) => {
                 <h1 className="text-md font-medium mt-2 text-center">Percentage Match</h1>
                 {showPopup[index] && (
                   <div className="absolute bottom-full mb-2 w-64 p-4 bg-white border border-gray-300 rounded shadow-lg text-center">
-                    <p className="mb-2">Here are some courses, projects, and internships to improve your chances for the job:</p>
+                    <p className="mb-2">Improve your chances for the job by enrolling in:</p>
                     <div className="flex flex-col gap-2">
-                      <Link href="/courses" legacyBehavior>
+                      <Link href="/Courses" legacyBehavior>
                         <a className="bg-blue-500 text-white py-1 px-2 rounded hover:bg-blue-700">Courses</a>
                       </Link>
-                      <Link href="/projects" legacyBehavior>
+                      <Link href="/Projects" legacyBehavior>
                         <a className="bg-blue-500 text-white py-1 px-2 rounded hover:bg-blue-700">Projects</a>
                       </Link>
-                      <Link href="/internships" legacyBehavior>
+                      <Link href="/Internships" legacyBehavior>
                         <a className="bg-blue-500 text-white py-1 px-2 rounded hover:bg-blue-700">Internships</a>
                       </Link>
                       <Link href="/Hackathon" legacyBehavior>

@@ -10,10 +10,8 @@ import json
 from dotenv import load_dotenv
 import subprocess
 
-load_dotenv()  # Load environment variables from .env file
-
-# Initialize Groq client with API key from environment variable
-client = Groq(api_key=os.getenv("GROQ_API_KEY"))
+load_dotenv()
+client = Groq()
 
 app = Flask(__name__)
 CORS(app, resources={r"/*": {"origins": "*"}})
@@ -67,6 +65,7 @@ def extract():
 
 @app.route('/api/jobs', methods=['POST'])
 def search_jobs():
+    
     query = request.json
     try:
         while True:  # Loop until we get a valid output

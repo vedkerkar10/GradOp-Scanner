@@ -66,7 +66,7 @@ const Main: React.FC<Main> = ({ onSearch }) => {
                 >
                     <div className={`transition-opacity duration-500 ease-in-out ${step === 0 ? 'opacity-100' : 'opacity-0'} ${step === 0 ? 'block' : 'hidden'}`}>
                         <h2 className="text-xl md:text-2xl font-bold mb-4">Which degree are you having or currently pursuing?</h2>
-                        <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mt-1">
+                        <div className="grid grid-cols-1 md:grid-cols-1 gap-4 mt-1">
                             <button type="button" onClick={nextStep} className="p-2 border border-gray-300 rounded">Computer Science</button>
                             <button type="button" onClick={nextStep} className="p-2 border border-gray-300 rounded">Mechanical Engineering</button>
                             <button type="button" onClick={nextStep} className="p-2 border border-gray-300 rounded">Civil Engineering</button>
@@ -75,7 +75,7 @@ const Main: React.FC<Main> = ({ onSearch }) => {
                     </div>
                     <div className={`transition-opacity duration-500 ease-in-out ${step === 1 ? 'opacity-100' : 'opacity-0'} ${step === 1 ? 'block' : 'hidden'}`}>
                         <h2 className="text-xl md:text-2xl font-bold mb-4">What are your career interests?</h2>
-                        <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mt-1">
+                        <div className="grid grid-cols-1 md:grid-cols-1 gap-4 mt-1">
                             <button type="button" onClick={nextStep} className="p-2 border border-gray-300 rounded">Software Developer</button>
                             <button type="button" onClick={nextStep} className="p-2 border border-gray-300 rounded">UI/UX Designer</button>
                             <button type="button" onClick={nextStep} className="p-2 border border-gray-300 rounded">AI Engineer</button>
@@ -84,7 +84,7 @@ const Main: React.FC<Main> = ({ onSearch }) => {
                     </div>
                     <div className={`transition-opacity duration-500 ease-in-out ${step === 2 ? 'opacity-100' : 'opacity-0'} ${step === 2 ? 'block' : 'hidden'}`}>
                         <h2 className="text-xl md:text-2xl font-bold mb-4">Which skills do you possess?</h2>
-                        <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mt-1">
+                        <div className="grid grid-cols-1 md:grid-cols-1 gap-4 mt-1">
                             <button type="button" onClick={(e) => handleClick(e, 'keyword', 'Frontend Developer')} className="p-2 border border-gray-300 rounded">Frontend Developer</button>
                             <button type="button" onClick={(e) => handleClick(e, 'keyword', 'Backend Developer')} className="p-2 border border-gray-300 rounded">Backend Developer</button>
                             <button type="button" onClick={(e) => handleClick(e, 'keyword', 'AI ML')} className="p-2 border border-gray-300 rounded">AI ML</button>
@@ -93,7 +93,7 @@ const Main: React.FC<Main> = ({ onSearch }) => {
                     </div>
                     <div className={`transition-opacity duration-500 ease-in-out ${step === 3 ? 'opacity-100' : 'opacity-0'} ${step === 3 ? 'block' : 'hidden'}`}>
                         <h2 className="text-xl md:text-2xl font-bold mb-4">Preferred Job Location</h2>
-                        <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mt-1">
+                        <div className="grid grid-cols-1 md:grid-cols-1 gap-4 mt-1">
                             <button type="button" onClick={(e) => handleClick(e, 'location', 'Bangalore')} className="p-2 border border-gray-300 rounded">Bangalore</button>
                             <button type="button" onClick={(e) => handleClick(e, 'location', 'Mumbai')} className="p-2 border border-gray-300 rounded">Mumbai</button>
                             <button type="button" onClick={(e) => handleClick(e, 'location', 'Chennai')} className="p-2 border border-gray-300 rounded">Chennai</button>

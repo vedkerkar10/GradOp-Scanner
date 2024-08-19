@@ -180,7 +180,7 @@ const JobResults: React.FC = () => {
                         </svg>
                       </button>
                       <div
-                        className="absolute bottom-8 right-4 md:right-8 w-40 h-40 flex flex-col items-center"
+                        className="absolute bottom-4 right-4 md:right-8 md:w-40 md:h-40 w-24 h-24 flex flex-col items-center"
                         onMouseEnter={() => setShowPopup(true)}
                         onMouseLeave={() => setShowPopup(false)}
                       >
@@ -194,7 +194,7 @@ const JobResults: React.FC = () => {
                             trailColor: '#d6d6d6',
                           })}
                         />
-                        <h1 className="text-md font-medium mt-2 text-center">Percentage Match</h1>
+                        <h1 className="md:text-md text-xs font-medium mt-2 text-center">Percentage Match</h1>
                         {showPopup && (
                           <div className="absolute bottom-full mb-2 w-64 p-4 bg-white border border-gray-300 rounded shadow-lg text-center">
                             <p className="mb-2">Improve your chances for the job by enrolling in:</p>
@@ -256,7 +256,7 @@ const JobResults: React.FC = () => {
         </div>
 
         {/* Right Section: New Content */}
-        <div className="bg-white w-full md:w-1/3 p-16 flex flex-col" >
+        <div className="bg-white w-full md:w-1/3 md:p-12 flex flex-col mt-12" >
           <span className="text-6xl">Need help with your CV ?</span>
           <span className="text-xl mt-8">We have an AI chat bot for you</span>
           <Link href={'/CV'}>

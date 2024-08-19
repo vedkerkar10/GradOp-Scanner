@@ -3,8 +3,8 @@ const Navbar: React.FC = () => {
         <nav className="border-gray-200 bg-[#49AA4D]">
             <div className="max-w-screen-xl flex flex-wrap items-center justify-between mx-auto p-4">
                 <a href="#" className="flex items-center space-x-3 rtl:space-x-reverse">
-                    <span className="text-white dark:text-white self-center text-3xl font-semibold whitespace-nowrap">GradOps Scanner</span>
-                    <img src="/search.svg" alt="Search" width={48} height={48} />
+                    <span className="text-white dark:text-white self-center text-3xl font-semibold whitespace-nowrap">ATLAS</span>
+                    <img src="/logo.svg" alt="Search" width={52} height={52} />
                 </a>
                 <button data-collapse-toggle="navbar-solid-bg" type="button" className="inline-flex items-center p-2 w-10 h-10 justify-center text-sm text-gray-500 rounded-lg md:hidden hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-gray-200" aria-controls="navbar-solid-bg" aria-expanded="false">
                     <span className="sr-only">Open main menu</span>

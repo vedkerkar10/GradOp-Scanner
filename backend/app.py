@@ -114,6 +114,7 @@ def upload_file():
         file_path = os.path.join('uploads', file.filename)
         file.save(file_path)
 
+        # Perform OCR
         if file_path.endswith('.pdf'):
             extracted_text = extract_text_from_pdf(file_path)
         else:

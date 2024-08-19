@@ -24,7 +24,8 @@
     "react-circular-progressbar": "^2.1.0",
     "react-dom": "^18",
     "react-select": "^5.8.0",
-    "selenium-webdriver": "^4.23.0"
+    "selenium-webdriver": "^4.23.0",
+    "swiper": "^11.1.9"
   },
   "devDependencies": {
     "@types/node": "^20",

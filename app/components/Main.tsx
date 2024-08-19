@@ -58,7 +58,7 @@ const Main: React.FC<Main> = ({ onSearch }) => {
     };
 
     return (
-        <div className="flex flex-col md:flex-row items-center justify-center min-h-screen bg-white p-4 md:p-8">
+        <div className="flex flex-col md:flex-row md:items-center md:justify-center min-h-screen bg-white p-4 md:p-8">
             <div className="w-full md:w-1/2 mx-4 md:mx-8 relative text-black">
 
                 <form

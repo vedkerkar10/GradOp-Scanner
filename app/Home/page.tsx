@@ -7,21 +7,7 @@ import Link from "next/link";
 import router from "next/router";
 import axios from "axios";
 
-interface MainProps {
-  onSearch: (searchParams: {
-    keyword: string;
-    location: string;
-    dateSincePosted: string;
-    jobType: string;
-    remoteFilter: string;
-    salary: string;
-    experienceLevel: string;
-    limit: string;
-    sortBy: string;
-  }) => void;
-}
-
-const Main: React.FC<MainProps> = ({ onSearch }) => {
+const Main: React.FC = () => {
   const [result, setResult] = useState({});
   const [jobs, setJobs] = useState([]);
   const [keyword, setKeyword] = useState("");
@@ -64,7 +50,6 @@ const Main: React.FC<MainProps> = ({ onSearch }) => {
       sortBy,
     };
     handleJobSearch(searchParams); // Call handleJobSearch with the same parameters
-    onSearch(searchParams); // Call onSearch with the search parameters
   };
   return (
     <>

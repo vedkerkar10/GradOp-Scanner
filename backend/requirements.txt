@@ -1,12 +1,7 @@
 flask
 flask-cors
-selenium
-webdriver-manager
-beautifulsoup4
-ollama
 requests
 python-dotenv
-cheerio
 pytesseract
 PyPDF2
 groq

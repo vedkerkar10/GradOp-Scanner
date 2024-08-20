@@ -10,3 +10,4 @@ cheerio
 pytesseract
 PyPDF2
 groq
+gunicorn

@@ -18,12 +18,20 @@ const Hackathons = () => {
     const [searchTerm, setSearchTerm] = useState("");
     const [error, setError] = useState<string | null>(null);
     const [loading, setLoading] = useState(true);
+    const [domain, setDomain] = useState("");
+
+    useEffect(() => {
+        if (process.env.NEXT_PUBLIC_DOMAIN) {
+          setDomain(process.env.NEXT_PUBLIC_DOMAIN);
+        }
+      },
+      []);
 
     useEffect(() => {
         const fetchHackathons = async () => {
             setError(null); // Reset error state
             try {
-                const response = await fetch("http://localhost:5000/api/hackathons");
+                const response = await fetch(`${domain}/api/hackathons`);
                 if (!response.ok) {
                     throw new Error(`HTTP error! status: ${response.status}`);
                 }

@@ -23,7 +23,7 @@ const Hackathons = () => {
         const fetchHackathons = async () => {
             setError(null); // Reset error state
             try {
-                const response = await fetch(`${process.env.NEXT_PUBLIC_DOMAIN}/api/hackathons`);
+                const response = await fetch("http://localhost:5000/api/hackathons");
                 if (!response.ok) {
                     throw new Error(`HTTP error! status: ${response.status}`);
                 }

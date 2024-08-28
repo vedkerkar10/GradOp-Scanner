@@ -67,7 +67,7 @@ const Main: React.FC<Main> = ({ onSearch }) => {
                 >
                     <div className={`w-full flex flex-col transition-opacity duration-500 ease-in-out ${step === 0 ? 'opacity-100' : 'opacity-0'} ${step === 0 ? 'block' : 'hidden'}`}>
                         <span className='md:text-7xl text-4xl mb-4'>Looking for the perfect job?</span>
-                        <span className='md:text-4xl text-2xl'> We’ve got you covered!</span>
+                        <span className='md:text-4xl text-2xl'> We've got you covered!</span>
                         <button className='text-white bg-green-500 p-4 mt-8 w-36' type='button' onClick={nextStep} >Get Started</button>
                     </div>
 
@@ -96,6 +96,22 @@ const Main: React.FC<Main> = ({ onSearch }) => {
                             <button type="button" onClick={(e) => handleClick(e, 'keyword', 'Backend Developer')} className="p-2 border border-gray-300 rounded">Backend Developer</button>
                             <button type="button" onClick={(e) => handleClick(e, 'keyword', 'AI ML')} className="p-2 border border-gray-300 rounded">AI ML</button>
                             <button type="button" onClick={(e) => handleClick(e, 'keyword', 'Fullstack Developer')} className="p-2 border border-gray-300 rounded">Fullstack Developer</button>
+                        </div>
+                        <div className="mt-4">
+                            <input 
+                                type="text" 
+                                placeholder="Enter custom location" 
+                                value={location} 
+                                onChange={(e) => setLocation(e.target.value)} 
+                                className="p-2 border border-gray-300 rounded w-full"
+                            />
+                            <button 
+                                type="button" 
+                                onClick={(e) => handleClick(e, 'location', location)} 
+                                className="mt-2 p-2 bg-blue-500 text-white rounded"
+                            >
+                                Submit Location
+                            </button>
                         </div>
                     </div>
                     <div className={`transition-opacity duration-500 ease-in-out ${step === 4 ? 'opacity-100' : 'opacity-0'} ${step === 4 ? 'block' : 'hidden'}`}>
